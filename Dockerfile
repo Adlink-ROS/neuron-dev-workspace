@@ -88,8 +88,8 @@ RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     bash -i -c "bash-it enable completion pip"
 
 # global vscode config
-ADD vscode /home/developer/.vscode
-ADD vscode /home/developer/.theia
+ADD .vscode /home/developer/.vscode
+ADD .vscode /home/developer/.theia
 ADD .devcontainer/compile_flags.txt /home/developer/compile_flags.txt
 ADD .devcontainer/templates /home/developer/templates
 
