@@ -1,0 +1,25 @@
+version: '2'
+services:
+  xserver:
+    image: neuron-devcontainer/xserver
+    build: xserver
+    ports:
+      - "3000:80"
+  workspace:
+    # env_file:
+    #   - .env
+    image: neuron-devcontainer/workspace
+    ports:
+      - "3001:3000"
+    volumes:
+      - workspace:/workspace
+      - ~/.gitconfig:/home/developer/.gitconfig
+    environment:
+      - DISPLAY=:0
+      - QT_X11_NO_MITSHM=1
+    volumes_from:
+      - xserver
+    depends_on:
+      - xserver
+volumes:
+  workspace:
