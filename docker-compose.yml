@@ -11,9 +11,7 @@ services:
     env_file:
       - .env
     container_name: neuron-dev-workspace-${ROS_DISTRO}
-    image: neuron-devcontainer/workspace
-    build:
-      context: distro/${ROS_DISTRO}
+    image: neuronsdk/neuron-dev-workspace:${ROS_DISTRO}-0.1.0
     ports:
       - "6166:3000"
     volumes:
