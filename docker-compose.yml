@@ -1,11 +1,10 @@
 version: '2'
 services:
-  xserver:
+  vncserver:
     env_file:
       - .env
     container_name: neuron-dev-vncserver-${ROS_DISTRO}
-    image: neuronsdk/neuron-dev-vncserver
-    build: xserver
+    image: neuronsdk/neuron-dev-vncserver:latest
     ports:
       - "6167:80"
   workspace:
@@ -24,8 +23,8 @@ services:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
     volumes_from:
-      - xserver
+      - vncserver
     depends_on:
-      - xserver
+      - vncserver
 volumes:
   workspace:
