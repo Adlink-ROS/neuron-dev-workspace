@@ -1,16 +1,22 @@
 version: '2'
 services:
   xserver:
+    env_file:
+      - .env
+    container_name: neuron-devcontainer-xserver-${ROS_DISTRO}
     image: neuron-devcontainer/xserver
     build: xserver
     ports:
-      - "3000:80"
+      - "6167:80"
   workspace:
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
+    container_name: neuron-devcontainer-workspace-${ROS_DISTRO}
     image: neuron-devcontainer/workspace
+    build:
+      context: distro/${ROS_DISTRO}
     ports:
-      - "3001:3000"
+      - "6166:3000"
     volumes:
       - workspace:/workspace
       - ~/.gitconfig:/home/developer/.gitconfig
