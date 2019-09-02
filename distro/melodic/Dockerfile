@@ -1,4 +1,5 @@
 ARG BASE_IMAGE=osrf/ros:melodic-desktop
+ARG ROS_DISTRO=melodic
 
 FROM maven AS xsdcache
 
@@ -63,7 +64,7 @@ RUN apt-get update && \
 # basic python packages
 RUN pip install jedi==0.13.3 pylint==1.9.4 pyflakes autopep8 python-language-server
 
-COPY entrypoint.sh /entrypoint.sh
+COPY distro/${ROS_DISTRO}/entrypoint.sh /entrypoint.sh
 
 COPY --from=xsdcache /opt/xsd /opt/xsd
 
@@ -88,13 +89,13 @@ RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     bash -i -c "bash-it enable completion pip"
 
 # global vscode config
-ADD vscode /home/developer/.vscode
-ADD vscode /home/developer/.theia
-ADD compile_flags.txt /home/developer/compile_flags.txt
-ADD templates /home/developer/templates
+ADD distro/${ROS_DISTRO}/vscode /home/developer/.vscode
+ADD distro/${ROS_DISTRO}/vscode /home/developer/.theia
+ADD distro/${ROS_DISTRO}/compile_flags.txt /home/developer/compile_flags.txt
+ADD distro/${ROS_DISTRO}/templates /home/developer/templates
 
 # install theia web IDE
-COPY theia-next.package.json /home/developer/package.json
+COPY distro/${ROS_DISTRO}/theia-next.package.json /home/developer/package.json
 RUN git clone -b enable-xml-fileassociations --depth=1 https://github.com/devrt/theia-xml-extension.git && \
     cd theia-xml-extension && yarn --cache-folder ./ycache && rm -rf ./ycache && yarn prepare && cd .. && \
     yarn --cache-folder ./ycache && rm -rf ./ycache && \
