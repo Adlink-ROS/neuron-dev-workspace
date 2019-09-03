@@ -4,9 +4,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "catkin_make",
+      "label": "colcon symlink build",
       "type": "shell",
-      "command": "bash -i -c catkin_make",
+      "command": "bash -i -c colcon build --symlink-install",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -24,48 +24,13 @@
       }
     },
     {
-      "label": "catkin_create_pkg",
+      "label": "rviz2",
       "type": "shell",
-      "command": "bash -i -c 'cd src && catkin_create_pkg ${input:packageName} ${input:dependingPackages}'"
-    },
-    {
-      "label": "xserver",
-      "type": "shell",
-      "command": "echo",
-      "args": [
-        "Please open http://localhost:3000/ using your favorite browser.\n(If you are using Docker Toolbox, open http://192.168.99.100:3000/ instead)",
-      ]
-    },
-    {
-      "label": "roscore",
-      "type": "shell",
-      "command": "bash -i -c roscore",
+      "command": "bash -i -c 'rviz2'",
       "presentation": {
         "reveal": "always",
         "panel": "new"
       }
-    },
-    {
-      "label": "rviz",
-      "type": "shell",
-      "command": "bash -i -c 'rosrun rviz rviz'",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    },
-  ],
-  "inputs": [
-    {
-      "id": "packageName",
-      "type": "promptString",
-      "description": "Please enter the name of new package"
-    },
-    {
-      "id": "dependingPackages",
-      "type": "promptString",
-      "description": "Please enter name of depending packages",
-      "default": "roscpp std_msgs"
     },
   ]
 }
