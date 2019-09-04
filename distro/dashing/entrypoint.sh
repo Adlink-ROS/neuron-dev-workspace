@@ -14,9 +14,6 @@ sed -e 's@\$ROS_DISTRO@'"$ROS_DISTRO"'@' /home/developer/compile_flags.txt > /wo
 
 ln -sfn /workspace /home/developer/workspace
 
-source /opt/ros/$ROS_DISTRO/setup.bash
-source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
-
 cd /home/developer
 
 exec $@

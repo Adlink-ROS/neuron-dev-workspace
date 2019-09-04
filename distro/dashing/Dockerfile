@@ -51,8 +51,13 @@ RUN apt-get update && \
     update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-6.0 100 && \
     npm install -g yarn && \
     echo developer ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/developer && \
-    chmod 0440 /etc/sudoers.d/developer && \
-    apt-get clean
+    chmod 0440 /etc/sudoers.d/developer
+
+# install rmw_opensplice_cpp
+RUN apt-get install -y ros-${ROS_DISTRO}-rmw-opensplice-cpp ros-${ROS_DISTRO}-rqt ros-${ROS_DISTRO}-rqt-graph
+
+# clean up apt cache
+RUN apt-get clean
 
 # basic python packages
 RUN pip install jedi==0.13.3 pylint==1.9.4 pyflakes autopep8 python-language-server
@@ -70,6 +75,9 @@ ENV SHELL /bin/bash
 # clang shows readable compile error
 ENV CC /usr/bin/clang
 ENV CXX /usr/bin/clang++
+
+# set rmw_opensplice_cpp for the default RMW
+ENV RMW_IMPLEMENTATION rmw_opensplice_cpp
 
 # jre is required to use XML editor extension
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
@@ -93,8 +101,8 @@ RUN git clone -b enable-xml-fileassociations --depth=1 https://github.com/devrt/
     yarn --cache-folder ./ycache && rm -rf ./ycache && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build
 
-# enter ROS world
-RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+ADD distro/dashing/hook.sh /home/developer/.hook.sh
+RUN echo ". ${HOME}/.hook.sh" > ~/.bashrc
 
 EXPOSE 3000
 
