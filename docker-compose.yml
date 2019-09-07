@@ -4,14 +4,14 @@ services:
     env_file:
       - .env
     container_name: neuron-dev-vncserver-${ROS_DISTRO}
-    image: neuronsdk/neuron-dev-vncserver:latest
+    image: neuronswkit/neuron-dev-vncserver:latest
     ports:
       - "6167:80"
   workspace:
     env_file:
       - .env
     container_name: neuron-dev-workspace-${ROS_DISTRO}
-    image: neuronsdk/neuron-dev-workspace:${ROS_DISTRO}-0.1.0
+    image: neuronswkit/neuron-dev-workspace:${ROS_DISTRO}-0.1.0
     ports:
       - "6166:3000"
     volumes:
