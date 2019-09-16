@@ -1,10 +1,12 @@
-version: '2'
+version: '3.4'
 services:
   vncserver:
     env_file:
       - .env
     container_name: neuron-dev-vncserver-${ROS_DISTRO}
     image: neuronswkit/neuron-dev-vncserver:latest
+    volumes:
+      - x11-sock:/tmp/.X11-unix
     ports:
       - "6167:80"
   workspace:
@@ -15,14 +17,17 @@ services:
     ports:
       - "6166:3000"
     volumes:
+      - x11-sock:/tmp/.X11-unix
       - workspace:/workspace
       - ~/.gitconfig:/home/developer/.gitconfig
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
-    volumes_from:
-      - vncserver
     depends_on:
       - vncserver
+
 volumes:
+  x11-sock:
   workspace:
+    external: false
+    name: neuron-dev-workspace-${ROS_DISTRO}
