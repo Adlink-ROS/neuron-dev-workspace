@@ -7,13 +7,14 @@ sudo usermod -u $USER_ID -o -m -d /home/developer developer > /dev/null 2>&1
 sudo groupmod -g $GROUP_ID developer > /dev/null 2>&1
 sudo chown -R developer:developer /workspace
 
-ln -sfn /home/developer/.vscode /workspace/.vscode
+# ln -sfn /home/developer/.vscode /workspace/.vscode
+ln -sfn /home/developer/.theia /workspace/.theia
 
 rm -f /workspace/compile_flags.txt || true
 sed -e 's@\$ROS_DISTRO@'"$ROS_DISTRO"'@' /home/developer/compile_flags.txt > /workspace/compile_flags.txt
 
 ln -sfn /workspace /home/developer/workspace
 
-cd /home/developer
+mkdir -p $WORKSPACE/src && cd /home/developer
 
 exec $@

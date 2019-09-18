@@ -62,8 +62,6 @@ RUN apt-get clean
 # basic python packages
 RUN pip install jedi==0.13.3 pylint==1.9.4 pyflakes autopep8 python-language-server
 
-COPY distro/${ROS_DISTRO}/entrypoint.sh /entrypoint.sh
-
 COPY --from=xsdcache /opt/xsd /opt/xsd
 
 USER developer
@@ -91,7 +89,7 @@ RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
 
 # global vscode config
 ADD distro/${ROS_DISTRO}/vscode /home/developer/.vscode
-ADD distro/${ROS_DISTRO}/vscode /home/developer/.theia
+ADD distro/${ROS_DISTRO}/theia /home/developer/.theia
 ADD distro/${ROS_DISTRO}/compile_flags.txt /home/developer/compile_flags.txt
 
 # install theia web IDE
@@ -101,8 +99,14 @@ RUN git clone -b enable-xml-fileassociations --depth=1 https://github.com/devrt/
     yarn --cache-folder ./ycache && rm -rf ./ycache && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build
 
-ADD distro/dashing/hook.sh /home/developer/.hook.sh
-RUN echo ". ${HOME}/.hook.sh" > ~/.bashrc
+RUN apt install -t gazebo
+
+COPY distro/${ROS_DISTRO}/entrypoint.sh /entrypoint.sh
+COPY distro/${ROS_DISTRO}/env_hook.sh /home/developer/env_hook.sh
+
+RUN echo "source ${HOME}/env_hook.sh" >> ~/.bashrc
+
+ENV WORKSPACE /workspace
 
 EXPOSE 3000
 
